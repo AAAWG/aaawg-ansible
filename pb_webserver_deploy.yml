@@ -1,0 +1,28 @@
+---
+# This playbook deploys the systems and applications in the environment.
+# For continuous, regular updates to the systems and applications use
+# this playbook!
+#
+# The difference between provisioning and deployment is that provisioning 
+# is done once, deployment is done every time you need to push something
+# to production or staging
+
+- name: Install base applications
+  hosts: ec2
+  sudo: yes
+  remote_user: ubuntu
+  roles:
+    - aaawg-base
+    - aaawg-rsyslog
+    - aaawg-users
+
+
+- name: Deploy Webserver on the EC2 instances
+  hosts: tag_Name_Webserver
+  sudo: yes
+  remote_user: ubuntu
+  gather_facts: True
+  roles:
+    - aaawg-nginx
+    - aaawg-website
+

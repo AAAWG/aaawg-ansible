@@ -1,0 +1,24 @@
+---
+# file: group_vars/all
+# These variables will be included in all groups
+
+# NOTE! These should be stored encrypted with ansible-vault when running
+# in full production. Running with unencrypted variables during testing...
+
+root_password: SuperSecureSecretPassword1
+deploy_password: SuperSecureSecretPassword1
+
+# AWS  Access Key ID:
+aws_access_key: <INSERT AWS KEY ID HERE>
+# AWS Secret Access Key
+aws_secret_key: <INSERT AWS SECRET KEY HERE>
+
+# Amazon EC2 SSH Key for EC2 instanses
+ec2_deploy_key_file: "keys/aaawg_deploy_ssh_key.pem"
+ec2_deploy_key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    INSERT PRIVATE KEY HERE INSERT PRIVATE KEY HERE INSERT PRIVATE KEY HERE 
+    INSERT PRIVATE KEY HERE INSERT PRIVATE KEY HERE INSERT PRIVATE KEY HERE
+    INSERT PRIVATE KEY HERE INSERT PRIVATE KEY HERE INSERT PRIVATE KEY HERE
+    INSERT PRIVATE KEY HERE INSERT PRIVATE KEY HERE INSERT PRIVATE KEY HERE
+    -----END RSA PRIVATE KEY-----

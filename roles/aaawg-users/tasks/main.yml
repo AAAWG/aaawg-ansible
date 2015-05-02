@@ -1,0 +1,25 @@
+---
+# tasks file for aaawg-users
+
+# Create deploy user that will be used for deploying configurations
+- name: Create Deploy User
+  user: 
+    name=deploy 
+    password={{ deploy_password }} 
+    groups=www-data 
+    append=yes 
+    shell=/bin/bash
+
+
+- name: Add Deploy User Authorized Key
+  authorized_key: 
+    user=deploy
+    key="{{ deploy_public_key }}"
+    state=present
+
+# Add users
+- name: Add users
+  user: name={{ item }} state=present  group=sudo append=yes
+  with_items:
+    - khalavak
+    - slinden

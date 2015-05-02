@@ -1,0 +1,13 @@
+---
+# tasks file for aaawg-update
+# Update / upgrade system packages on servers
+
+- name: Run apt-get update on system
+  apt: update_cache=yes
+  tags: 
+    - update
+
+- name: Run apt-get upgrade on system
+  apt: upgrade=full
+  tags: 
+    - upgrade

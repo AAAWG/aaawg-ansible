@@ -1,0 +1,7 @@
+---
+# vars file for aaawg-website
+
+# Site name and Git-repository
+site_name: aaawg-demo
+site_repo: https://github.com/AAAWG/presentations.git
+

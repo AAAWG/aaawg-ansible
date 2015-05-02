@@ -1,0 +1,25 @@
+---
+# tasks file for aaawg-website
+
+- name: Fetch website from repo
+  git: repo={{ site_repo }} dest=/srv/sites/{{ site_name }}
+
+- name: Confgure the {{ site_name }} website
+  template: 
+    src={{ site_name }}.conf.j2 
+    dest=/etc/nginx/sites-available/{{ site_name }}.conf
+    group=root owner=root
+  tags: 
+    - nginx
+    - config
+
+- name: Enable the website
+  file: 
+    src=/etc/nginx/sites-available/{{ site_name }}
+    dest=/etc/nginx/sites-enabled/{{ site_name }} state=link
+  notify:
+    - restart nginx
+  tags: 
+    - nginx
+    - enable
+

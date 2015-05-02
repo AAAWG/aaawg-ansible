@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+# Set the following varible to 0 in order to prevent sshguard init script from
+# changing the firewall rules; in such case you will need to setup such rules
+# yourself according to the Sshguard documentation.
+# See man page sshguard(8) for documentation of the command line options
+ENABLE_FIREWALL=1
+
+# list of log files to scan delimited by space
+LOGFILES="/var/log/auth.log"
+
+# Whitelist configuration file
+WHITELIST="/etc/sshguard/whitelist"
+
+# Other options
+ARGS="-b 50:/etc/sshguard/blacklist.db -a 30 -p 600 -s 86400" 
+

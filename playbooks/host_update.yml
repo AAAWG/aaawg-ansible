@@ -1,0 +1,34 @@
+# This playbook updates hosts 
+# requires --extra-vars="target=somehostname yumcommand=update"
+
+
+- name: Update host
+  hosts: "{{ target }}"
+  gather_facts: false
+  user: root
+ 
+  tasks: 
+    # Update packages
+    - name: Run apt-get update on host
+      apt: update_cache=yes
+      tags: 
+        - update
+    
+    - name: Run apt-get upgrade on host
+      apt: upgrade=full
+      tags: 
+        - upgrade
+
+- name: Run rkhunter if installed to test for known rootkits
+  hosts:  "{{ target }}"
+  user: root
+
+  tasks:
+    - name: Check for rkhunter
+      command: /usr/bin/test -f /usr/bin/rkhunter
+      register: rkhunter
+      ignore_errors: true
+  
+    - name: Run rkhunter --propupd
+      command: /usr/bin/rkhunter --propupd
+      when: rkhunter|success

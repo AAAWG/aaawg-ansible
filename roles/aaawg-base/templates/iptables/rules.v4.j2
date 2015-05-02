@@ -1,0 +1,62 @@
+# {{ ansible_managed }}
+# # See the iptables(5) manpage for details
+
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:LOGNDROP - [0:0]
+:sshguard - [0:0]
+
+#  Allow all loopback (lo0) traffic and drop all traffic to 127/8 that doesn't use lo0
+-A INPUT -i lo -j ACCEPT
+-A INPUT -d 127.0.0.0/8 -j REJECT
+
+# Setup sshguard rule
+-A INPUT -j sshguard
+
+#  Accept all established inbound connections
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+#  Allow all outbound traffic - you can modify this to only allow certain traffic
+-A OUTPUT -j ACCEPT
+
+#  Allow SSH connections
+#  The -dport number should be the same port number you set in sshd_config
+-A INPUT -p tcp -m state --state NEW --dport {{ ssh_port }}  -j ACCEPT
+
+{% if inventory_hostname in groups['web'] %}
+#  Allow HTTP and HTTPS connections from anywhere (the normal ports for websites and SSL).
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+{% endif %}
+
+{% if inventory_hostname in groups['infra'] %}
+#  Allow HTTPS connections from anywhere (the normal ports for websites and SSL).
+-A INPUT -p tcp --dport 443 -j ACCEPT
+{% endif %}
+
+{% if inventory_hostname in groups['db'] %}
+# Allow PostgreSQL connections 
+-A INPUT -p tcp --dport 5432 -j  ACCEPT
+{% endif %}
+
+#  Allow ping
+-A INPUT -p icmp -j ACCEPT
+
+#  Log and drop the rest
+-A INPUT -j LOGNDROP
+-A LOGNDROP -p tcp -m limit --limit 5/min -j LOG --log-prefix "Denied TCP: " --log-level 7
+-A LOGNDROP -p udp -m limit --limit 5/min -j LOG --log-prefix "Denied UDP: " --log-level 7
+-A LOGNDROP -p icmp -m limit --limit 5/min -j LOG --log-prefix "Denied ICMP: " --log-level 7
+-A LOGNDROP -j DROP
+
+#  Drop all other inbound - default deny unless explicitly allowed policy
+-A INPUT -j DROP
+-A FORWARD -j DROP
+
+# Reject the rest of the traffic
+-A INPUT -j REJECT --reject-with icmp-host-prohibited                             
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited 
+
+COMMIT

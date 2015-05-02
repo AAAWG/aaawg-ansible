@@ -1,0 +1,98 @@
+---
+# tasks file for aaawg-base
+# Common tasks to do on all servers in the infrastructure. Setting up NTP, SSH, Git, etc.
+
+- name: Show host variables
+  debug: msg="Inventory hostname {{ inventory_hostname }} Ansible_hostname  {{ ansible_hostname }}"
+
+
+- name: Install standard packages
+  apt: pkg={{ item }} state=present
+  sudo: yes
+  with_items:
+    - vim-nox
+    - tmux
+    - git
+    - htop
+
+  tags: 
+    - install
+
+
+- name: Install ufw firewall
+  apt: pkg=ufw state=present
+  tags: 
+    - ufw
+    - install
+
+- name: Enable ufw logging
+  ufw: logging=on
+  tags: 
+    - ufw
+    - config
+
+- name: Allow ssh(tcp/22) through ufw
+  ufw: proto=tcp port=22 rule=allow
+  tags: 
+    - ufw
+    - config
+
+- name: Configure ufw default deny policy 
+  ufw: state=enabled direction=incoming policy=deny
+  tags: 
+    - ufw
+
+
+- name: Install sshguard
+  apt: pkg=sshguard state=present
+  tags: 
+    - sshguard
+    - install
+
+- name: Configure sshguard default settings
+  template: src=sshguard/sshguard.j2 dest=/etc/default/sshguard
+    owner=root group=root mode=0644
+  tags: 
+    - sshguard
+    - config
+
+- name: Configure sshguard whitelist
+  template: src=sshguard/whitelist.j2 dest=/etc/sshguard/whitelist
+    owner=root group=root mode=0644
+  tags:
+    - sshguard
+    - config
+
+- name: Add sshguard iptables-chain to ufw policies
+  template: src=sshguard/ufw-before.rules.j2 dest=/etc/ufw/before.rules
+    owner=root group=root mode=0640
+  notify: restart sshguard
+  tags:
+    - sshguard
+    - config
+
+- name: Ensure sshguard is running and enabled to start at boot 
+  service: name=sshguard state=running enabled=yes
+  tags: 
+    - sshguard
+    - enable
+
+
+- name: Install sshd
+  apt: pkg=openssh-server state=present
+  tags: 
+    - sshd
+    - install
+
+- name: Configure sshd
+  template: src=ssh/sshd_config.j2 dest=/etc/ssh/sshd_config
+  notify: restart sshd
+  tags: 
+    - sshd
+    - config
+
+- name: Ensure sshd is running and enabled to start at boot 
+  service: name=ssh state=running enabled=yes
+  tags: 
+    - sshd
+    - enable

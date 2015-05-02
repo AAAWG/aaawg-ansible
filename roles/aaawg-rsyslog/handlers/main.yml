@@ -1,0 +1,6 @@
+---
+# handlers file for aaawg-rsyslog
+
+- name: restart rsyslogd
+  service: name=rsyslog state=restarted
+

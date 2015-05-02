@@ -1,0 +1,20 @@
+---
+# handlers file for aaawg-base
+
+# Handler to restart sshd
+- name: restart sshd
+  service: name=ssh state=restarted
+
+# Handler to restart ntpd
+- name: restart ntpd
+  service: name=ntp state=restarted
+
+# Handler to restart sshguard                                                      
+- name: restart sshguard
+  service: name=sshguard state=restarted
+
+# Handler to restart iptables
+- name: restart iptables
+  service: name=iptables-persistent state=restarted
+
+

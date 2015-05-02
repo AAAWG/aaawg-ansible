@@ -1,0 +1,9 @@
+---
+# vars file for aaawg-users
+
+# deploy user password
+# mkpasswd --method=SHA-512 oGae1uiCaetazooruHeey9bui9Lu4t
+deploy_password: $6$7u4C0bcSJRJ$gkNQglzxX/1ezwmIa.Mt/FnvQpdutxBF1ANMg5a8srNDQJqJ5qxKQQqyi491MqbHA7mj7cagF3dVOp/
+
+deploy_public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCcvcxN7OUXwG2qGJWU0tiHLafuD4bZNbjqyQ3AWAu/AgBalC/PoSpruVuTn6BgDsgZ7xZJjXeBNkoXoO3RiRTfRaKu7UASC+pl6GkvV6Gf37cnoMpuFiHiX9ajmW/QhW8D/HNVPDPlVQ2eoXYEUylU9AW3ypTtqAzcRtSHOqZehcIo2zLbhAz4M4lvakl+taFQfbpUrETXY9tZicNmFITGBew7xkVVU0ptD/pNoR2o+QYWw/LUPINe7ZOyVF4cF9Zqib0z8gHr/9cqkZ0VblNqY47KEyKvG8/0tBWZzOyqEsbsQeuoGxlTIrpeBzRy71aLqEY0VfknOlyCDEULfox/ khalavak@legolas.local
+

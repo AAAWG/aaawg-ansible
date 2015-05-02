@@ -1,0 +1,10 @@
+; inventory/ec2_control
+
+[localhost]                                                                    
+127.0.0.1 ansible_python_interpreter=/usr/local/bin/python     
+
+[local]                                                                        
+localhost 
+
+[ec2_instances]
+# EC2 Instances

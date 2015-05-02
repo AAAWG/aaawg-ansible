@@ -1,0 +1,8 @@
+---
+# defaults file for aaawg-base
+
+# SSH 
+# https://www.adayinthelifeof.nl/2012/03/12/why-putting-ssh-on-another-port-than-22-is-bad-idea/
+# http://danielmiessler.com/blog/putting-ssh-another-port-good-idea/
+
+ssh_port: 22

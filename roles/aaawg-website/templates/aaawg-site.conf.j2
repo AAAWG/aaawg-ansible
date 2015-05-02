@@ -1,0 +1,16 @@
+# {{ ansible_managed }}  
+
+server {
+
+    listen          80;
+
+    access_log      /var/log/nginx/{{ site_name }}-access.log;
+    error_log       /var/log/nginx/{{ site_name }}-error.log;
+    rewrite_log     on;
+
+    root            /srv/sites/{{ site_name }};
+    index           index.html;
+
+
+}
+
