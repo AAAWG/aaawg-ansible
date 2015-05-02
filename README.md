@@ -32,12 +32,10 @@ are run from localhost to AWS API.
 All subsequent inventory operations will be done using the ec2.py inventory
 script installed in the plugins/inventory directory:
 
-$ ls -la plugins/inventory/
-total 72
-drwxr-x---  4 khalavak  staff   136B Mar 30 00:46 ./
-drwxr-x---  3 khalavak  staff   102B Mar 30 00:46 ../
--rw-r-----  1 khalavak  staff   4.0K Jan 25 00:26 ec2.ini
--rw-r-----  1 khalavak  staff    26K Jan  1 13:35 ec2.py
+    $ ls -la plugins/inventory/
+    total 72
+    -rw-r-----  1 khalavak  staff   4.0K Jan 25 00:26 ec2.ini
+    -rw-r-----  1 khalavak  staff    26K Jan  1 13:35 ec2.py
 
 
 The following commands must be run to first provision the EC2 instancers in
